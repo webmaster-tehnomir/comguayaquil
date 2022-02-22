@@ -1,0 +1,40 @@
+{% block unit %}
+    {% if oem %}
+        {% set cCois = [] %}
+        {% for detail in unit.details %}
+            {% if oem == detail.oem|replace({' ': ''})  %}
+                {% set cCois = cCois|merge([detail.codeonimage]) %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% set link = createUrl('unit', '', '', {
+            'c': vehicle.catalog,
+            'vid': vehicle.vehicleid ?: 0,
+            'uid': unit.unitid,
+            'gid': gid,
+            'cid': category.categoryid,
+            'ssd': unit.ssd,
+            'coi': oem ? cCois|join(', ') : code|join(', '),
+            'fromTask': 'qgroups'
+        })
+    %}
+
+    <div class="unit" data-number="{{ loop.index }}">
+        <div class="guayaquil_unit_icons">
+            {% if unit.imageurl != '' %}
+                <div class="guayaquil_zoom" link="{{ link }}" full="{{ unit.imageurl|replace({'%size%' : 'source'}) }}"
+                     title="<a href='{{ link }}'>{{ unit.name }}</a>" data-uid="{{ unit.unitid }}">
+                    <img src="com_guayaquil/assets/images/zoom_{{ theme }}.png">
+                </div>
+            {% endif %}
+        </div>
+        <div class="gdImage">
+            <img class="img_group" src="{{ unit.imageurl != '' ? unit.imageurl|replace({'%size%' : '250'}) : noimage }}">
+        </div>
+        <a href="{{ link }}">
+            <b>{{ unit.code }}: </b>
+            {{ unit.name }}
+        </a>
+    </div>
+{% endblock %}

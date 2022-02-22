@@ -1,0 +1,127 @@
+{% set detailsLength = details.replacements|length %}
+{% for detail in details %}
+    {% set detailLink = createUrl(
+    'aftermarket',
+    'findOem', '' ,
+    { 'detail_id': detail.attributes.detailid, 'options': 'crosses,weights,names,properties,images' }
+    ) %}
+    <div class="am-detail">
+        <div class="am-detail-heading">
+            <span><a class="am-oem" data-url="{{ detailLink }}"
+                     href="javascript:void(0)">{{ detail.attributes.formattedoem }}</a></span>
+            <span><a class="manufacturerInfo detailManufacturerLink" href="javascript:void(0)" id="manufacturerInfo" data-detail-id="{{ detail.attributes.detailid ~ '' }}"
+                     data-url="{{ createUrl('aftermarket', 'manufacturerinfo', '' , { 'manufacturerid': detail.attributes.manufacturerid }) }}">{{ detail.attributes.manufacturer }}</a></span>
+            <span>{{ detail.attributes.weight ? 'Weight: ' ~ detail.attributes.weight : '' }}</span>
+            <span>{{ detail.attributes.volume ? detail.attributes.volume : '' }}</span>
+            <span>{{ detail.attributes.dimensions ? detail.attributes.dimensions : '' }}</span>
+            <br/>
+            {% for property in detail.properties.property %}
+                <span class="am-detail-property-name">{{ property.attributes.property }}: </span>
+                <span class="am-detail-property-value">{{ property.attributes.value }}</span><br/>
+            {% endfor %}
+        </div>
+        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                jQuery('.detailManufacturerLink[data-detail-id="{{ detail.attributes.detailid ~ '' }}"]').click(function () {
+                    var $this = jQuery(this);
+                    $this.colorbox({
+                        href: $this.data('url'),
+                        title: '',
+                        close: ''
+                    });
+                });
+            });
+
+        </script>
+        <table>
+            {% for image in detail.images.image %}
+                <tr>
+                    <td>{{ image.attributes.filename }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        {% if detail.replacements.replacement %}
+            <table class="collapse table guayaquil_tablecatalog" style="width: 100%">
+                <tr>
+                    <th></th>
+                    <th>Бренд</th>
+                    <th>Артикул</th>
+                    <th>Наименование</th>
+                    <th>Вес</th>
+                    <th>Объем</th>
+                    <th>Габаритные размеры</th>
+                </tr>
+                {% for replacement in detail.replacements.replacement %}
+                    {% set replacementManufacturerLink = createUrl(
+                    'aftermarket',
+                    'manufacturerinfo', '' ,
+                    { 'manufacturerid': replacement.detail.attributes.manufacturerid }) %}
+                    {% set replacementDetailLink = createUrl(
+                    'aftermarket',
+                    'findOem', '' ,
+                    { 'detail_id': replacement.detail.attributes.detailid, 'options': 'crosses,weights,names,properties,images' }) %}
+
+                    <tr>
+                        <td>{{ replacement.attributes.type ~ ' ' ~ replacement.attributes.way }}</td>
+                        <td>
+                            <a class="manufacturerInfo"
+                               id="manufacturerInfo{{ replacement.detail.attributes.detailid }}"
+                               href="javascript:void(0)" id="manufacturerInfo"
+                               data-url="{{ replacementManufacturerLink }}">
+                                {{ replacement.detail.attributes.manufacturer ? replacement.detail.attributes.manufacturer : '' }}
+                            </a>
+                            <script type="text/javascript">
+                                jQuery('#manufacturerInfo{{ replacement.detail.attributes.detailid }}').off('click');
+                                jQuery('#manufacturerInfo{{ replacement.detail.attributes.detailid }}').on('click', function () {
+                                    var $this = jQuery(this);
+                                    $this.colorbox({
+                                        href: $this.data('url'),
+                                        title: '',
+                                        close: ''
+                                    });
+                                });
+                            </script>
+                        </td>
+                        <td><a class="am-oem" data-url="{{ replacementDetailLink }}"
+                               href="javascript:void(0)">{{ replacement.detail.attributes.formattedoem ? replacement.detail.attributes.formattedoem : '' }}</a>
+                        </td>
+                        <td>{{ replacement.detail.attributes.name ? replacement.detail.attributes.name : '' }}</td>
+                        <td>{{ replacement.detail.attributes.weight ? replacement.detail.attributes.weight : '' }}</td>
+                        <td>{{ replacement.detail.attributes.volume ? replacement.detail.attributes.volume : '' }}</td>
+                        <td>{{ replacement.detail.attributes.dimensions ? replacement.detail.attributes.dimensions : '' }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        {% endif %}
+    </div>
+{% endfor %}
+{% if detailsLength == 0 %}
+    <div class="details-not-found">
+        <span>{{ 'unitDetailsNoResulst'|t }}</span>
+    </div>
+{% endif %}
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery(document).off('click', 'a.am-oem');
+        jQuery(document).on('click', 'a.am-oem', function (event) {
+
+            event.stopPropagation();
+            event.preventDefault();
+
+            showPreloader();
+
+            var url = jQuery(this).data('url');
+
+            jQuery.ajax({
+                url: url + '&format=raw',
+                success: function (data) {
+                    var detailsContainer = jQuery(document).find('div#content');
+                    if (data) {
+                        detailsContainer.html(data);
+                    }
+                    hidePreloader();
+                }
+            });
+        });
+    });
+</script>

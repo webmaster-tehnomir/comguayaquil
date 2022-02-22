@@ -1,0 +1,29 @@
+<table class="table collapse" style="width: 100%;">
+    <tr>
+        {% for key, value in manufacturerInfo.attributes %}
+            <th>{{ key }}</th>
+        {% endfor %}
+    </tr>
+    <tr>
+        {% for key, value in manufacturerInfo.attributes %}
+            <td>{{ value }}</td>
+        {% endfor %}
+    </tr>
+</table>
+<script type="text/javascript">
+//    function Resize_Box(){
+//        var x = jQuery('table').width();
+//        var y = jQuery('table').height();
+//        var width = x + 100;
+//        var height = y + 50;
+//        parent.jQuery.fn.colorbox.resize({
+//            innerWidth: width,
+//            innerHeight: height
+//        });
+//    }
+//    jQuery(document).ready(function () {
+//        jQuery(document).ready(function(){
+//            Resize_Box();
+//        });
+//    })
+</script>

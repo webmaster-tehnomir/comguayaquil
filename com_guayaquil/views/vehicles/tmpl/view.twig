@@ -1,0 +1,30 @@
+<div class="vehicles-page-wrapper">
+    {% use 'blocks/vehicles.twig' %}
+    {% use 'blocks/groupedVehicles.twig' %}
+    {% if vehicles %}
+        <h1>{{ 'cars'|t }}</h1>
+
+        {% if groupVehicles %}
+            {{ block('groupedVehicles') }}
+        {% else %}
+            {{ block('vehicles') }}
+        {% endif %}
+
+    {% endif %}
+
+    <script type="text/javascript">
+
+
+        jQuery('.guayaquil_table.table tr.hastooltip').tooltip({
+            track: true,
+            delay: 0,
+            showURL: false,
+            fade: 250,
+            position: {my: 'center bottom'},
+            bodyHandler: function () {
+                var tooltipContext = jQuery(this).find('.ttp');
+                return tooltipContext.html();
+            }
+        });
+    </script>
+</div>

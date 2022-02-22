@@ -1,0 +1,17 @@
+{% use 'blocks/vinSearch.twig' %}
+{% use 'blocks/frameSearch.twig' %}
+{% use 'blocks/vinFrameSearch.twig' %}
+
+{% block searchTable %}
+    <div class="flex">
+        <div class="catalogs-search">
+            {{ block('vinSearch') }}
+        </div>
+        <div class="catalogs-search">
+            {{ block('vinFrameSearch') }}
+        </div>
+        <div class="catalogs-search">
+            {{ block('frameSearch') }}
+        </div>
+    </div>
+{% endblock %}

@@ -135,7 +135,7 @@ class SSLSoapClient extends \SoapClient
     {
         $this->curlHandle = curl_init();
 
-        curl_setopt($this->curlHandle, CURLOPT_URL, $this->location);
+        curl_setopt($this->curlHandle, CURLOPT_URL, $this->options['location']);
 
         curl_setopt($this->curlHandle, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($this->curlHandle, CURLOPT_HEADER, false);

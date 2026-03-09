@@ -41,23 +41,13 @@ class SSLSoapClient extends \SoapClient
      * @param $options [optional] optional = array(..., sslCertPath=>file.pem, sslKeyPath=>file.key, ...)
      *
      */
-    public function __construct($wsdl, $options = array())
+    public function __construct(string|null $wsdl, array $options = [])
     {
         $this->options = $options;
 
         parent::__construct($wsdl, $this->options);
         $this->initCurl();
     }
-
-
-    /**
-     *
-     */
-    public function __destruct()
-    {
-        curl_close($this->curlHandle);
-    }
-
 
     /**
      * Call a url using curl with ntlm auth
@@ -92,14 +82,13 @@ class SSLSoapClient extends \SoapClient
         }
     }
 
-
     /**
      * If value is null cookie will be deleted.
      *
      * @param string $name
      * @param null $value
      */
-    public function __setCookie($name, $value = null)
+    public function __setCookie(string $name, $value = null): void
     {
         if (is_null($value)) {
             unset($this->cookies[$name]);
@@ -213,11 +202,11 @@ class SSLSoapClient extends \SoapClient
      *
      * @return mixed
      */
-    public function __call($functionName, $arguments)
+    public function __call(string $name, array $args): mixed
     {
         $this->lastResponse = null;
 
-        return $this->__soapCall($functionName, $arguments);
+        return $this->__soapCall($name, $args);
     }
 
 
@@ -228,7 +217,7 @@ class SSLSoapClient extends \SoapClient
      * @link http://php.net/manual/en/soapclient.getlastrequest.php
      * @return string The last SOAP request, as an XML string.
      */
-    public function __getLastRequest()
+    public function __getLastRequest(): ?string
     {
         return $this->lastRequest;
     }
@@ -241,7 +230,7 @@ class SSLSoapClient extends \SoapClient
      * @link http://php.net/manual/en/soapclient.getlastresponse.php
      * @return string The last SOAP response, as an XML string.
      */
-    public function __getLastResponse()
+    public function __getLastResponse(): ?string
     {
         return $this->lastResponse;
     }
@@ -290,16 +279,20 @@ class SSLSoapClient extends \SoapClient
      * option set to false, a SoapFault object will be returned.
      */
     public function __soapCall(
-        $function_name, $arguments, $options = NULL, $input_headers = NULL, &$output_headers = NULL
-    )
+        string $name,
+        array $args,
+        array|null $options = null,
+        $inputHeaders = null,
+        &$outputHeaders = null
+    ): mixed
     {
         try {
-            return parent::__soapCall($function_name, $arguments, $options, $input_headers, $outputHeaders);
+            return parent::__soapCall($name, $args, $options, $inputHeaders, $outputHeaders);
         } catch (SSLSoapException $e) { $this->error = $e->getMessage(); }
 
         $this->callCurl();
 
-        return parent::__soapCall($function_name, $arguments, $options, $input_headers, $outputHeaders);
+        return parent::__soapCall($name, $args, $options, $inputHeaders, $outputHeaders);
     }
 
 
@@ -328,7 +321,14 @@ class SSLSoapClient extends \SoapClient
      *
      * @return string The XML SOAP response.
      */
-    public function __doRequest($request, $location, $action, $version, $one_way = 0)
+    public function __doRequest(
+        string $request,
+        string $location,
+        string $action,
+        int $version,
+        bool $oneWay = false,
+        ?string $uriParserClass = null
+    ): ?string
     {
         if (!is_null($this->lastResponse)) {
 // We forced a response, so return it.

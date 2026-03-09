@@ -67,7 +67,7 @@ class View
      */
     public GuayaquilRequestOEM $request;
     public bool $dev;
-    public null $pathway;
+    public ?array $pathway;
     public bool $toolbar;
 
     public function __construct()

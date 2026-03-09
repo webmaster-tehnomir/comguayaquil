@@ -11,6 +11,18 @@ use guayaquil\View;
 class CatalogHtml extends View
 {
     public $operation;
+    public $cataloginfo;
+    public $brandName;
+    public $useVin;
+    public $useFrame;
+    public $otherøSearch;
+    public $wizard;
+    public array $wizardFields;
+    public $example;
+    public $vinExample;
+    public $frameExample;
+    public $useApplicability;
+    public bool $showApplicability;
 
     public function Display($tpl = 'catalog', $view = 'view')
     {
@@ -45,7 +57,7 @@ class CatalogHtml extends View
             $this->brandName         = $cataloginfo->name;
             $this->useVin            = $cataloginfo->supportvinsearch;
             $this->useFrame          = $cataloginfo->supportframesearch;
-            $this->otherSearch       = $cataloginfo->operations;
+            $this->otherøSearch       = $cataloginfo->operations;
             $this->wizard            = $cataloginfo->supportparameteridentification2;
             $this->wizardFields      = $wizardFields;
             $this->example           = $cataloginfo->vinFrameExample;

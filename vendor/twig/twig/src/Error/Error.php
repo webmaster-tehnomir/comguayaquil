@@ -183,7 +183,7 @@ class Error extends \Exception
     /**
      * Sets the source context of the Twig template where the error occurred.
      */
-    public function setSourceContext(Source $source = null)
+    public function setSourceContext(?Source $source = null)
     {
         if (null === $source) {
             $this->sourceCode = $this->filename = $this->sourcePath = null;

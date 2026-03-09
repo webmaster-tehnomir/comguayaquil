@@ -31,7 +31,7 @@ class GuayaquilRequestOEM
     public $responseData;
     public $requestTime;
 
-    function __construct($catalog = '', $ssd = '', $locale = 'ru_RU', IGuayquilCache $cache = null)
+    function __construct($catalog = '', $ssd = '', $locale = 'ru_RU', ?IGuayquilCache $cache = null)
     {
         $language = new Language();
 

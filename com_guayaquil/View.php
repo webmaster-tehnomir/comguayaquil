@@ -62,6 +62,11 @@ class View
      */
     public $user;
 
+    /**
+     * @var GuayaquilRequestOEM
+     */
+    public GuayaquilRequestOEM $request;
+
     public function __construct()
     {
         $this->input = new Input();

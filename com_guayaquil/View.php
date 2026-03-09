@@ -66,6 +66,9 @@ class View
      * @var GuayaquilRequestOEM
      */
     public GuayaquilRequestOEM $request;
+    public bool $dev;
+    public null $pathway;
+    public bool $toolbar;
 
     public function __construct()
     {

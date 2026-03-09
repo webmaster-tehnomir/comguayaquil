@@ -90,6 +90,7 @@ class CatalogObject extends BaseGuayaquilObject
      * @var bool
      */
     public $supportdetailapplicability;
+    public mixed $vinFrameExample;
 
     /**
      * @param SimpleXMLElement $data

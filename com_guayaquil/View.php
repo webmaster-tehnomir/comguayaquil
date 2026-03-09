@@ -48,6 +48,14 @@ class View
      * @var string
      */
     public $theme;
+    /**
+     * @var Input
+     */
+    public $input;
+    /**
+     * @var array
+     */
+    public $data;
 
     public function __construct()
     {

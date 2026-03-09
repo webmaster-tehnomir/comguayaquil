@@ -29,6 +29,7 @@ class GuayaquilRequestOEM
     public $data;
     public $authorized;
     public $responseData;
+    public $requestTime;
 
     function __construct($catalog = '', $ssd = '', $locale = 'ru_RU', IGuayquilCache $cache = null)
     {

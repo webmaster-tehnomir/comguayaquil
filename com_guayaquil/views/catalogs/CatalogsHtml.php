@@ -21,6 +21,25 @@ use guayaquil\View;
 class CatalogsHtml extends View
 {
 
+    /**
+     * @var mixed|string
+     */
+    public mixed $frameExample;
+    /**
+     * @var mixed|string
+     */
+    public mixed $vinExample;
+    public array $catalogs;
+    public int $columns;
+    public float $elemInRow;
+    public int $elemCount;
+    public int $rest;
+    /**
+     * @var mixed|string
+     */
+    public mixed $vinFrameExample;
+    public bool $letters;
+
     public function Display($tpl = 'catalogs', $view = 'view')
     {
         $requests = [

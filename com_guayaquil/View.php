@@ -57,6 +57,11 @@ class View
      */
     public $data;
 
+    /**
+     * @var bool
+     */
+    public $user;
+
     public function __construct()
     {
         $this->input = new Input();
